@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# encoding=utf8
 # -*- coding: utf-8 -*-
 
 # vaporize example:
@@ -13,6 +14,7 @@ from secrets import Secrets
 from subprocess import call
 from os import listdir
 from string import Template
+from random import choice as choose
 
 def vaporize(image_dir, audio_file='short-macplus.mp3'):
   # first get image type
@@ -51,15 +53,38 @@ def get_image_urls(tweet):
       urls.append(media['media_url'])
   return urls
 
+
+RESPONSES = [
+    'Ｍ∆ＫＥ ＴＨＥ ＰＬ∆Ｚ∆ ＧＲＥ∆Ｔ ∆Ｇ∆ＩＮ #uncommonhacks',
+    'отдых в Припяти #uncommonhacks',
+    'ＤＡＮＫ#uncommonhacks'
+]
+
 def process_status(status):
-  print status.text
-  print status.user.screen_name
-  # print status.entities
-  print (get_image_urls(status) or 'No images')
+  if status.retweeted or status.favorited:
+    return
+
+  uname = status.user.screen_name
+  image_urls = get_image_urls(status)
+
+  print '\t' + str(status.id)
+  print '\t' + status.text
+  print '\t' + uname
+
+  # reply with the phrase is image is empty
+  if image_urls == []:
+    resp = '@' + uname + ': ' + choose(RESPONSES)
+    print '\t' + resp
+    api.update_status(resp, status.id)
+    api.create_favorite(status.id)
+
   print '\n'
 
 if __name__ == '__main__':
   print 'BOT STARTED!\n'
+
+  reload(sys)
+  sys.setdefaultencoding('utf8')
 
   auth = tweepy.OAuthHandler(Secrets['CONSUMER_KEY'], Secrets['CONSUMER_SECRET'])
   auth.set_access_token(Secrets['ACCESS_KEY'], Secrets['ACCESS_SECRET'])
