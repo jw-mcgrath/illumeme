@@ -13,3 +13,4 @@ def getVapor():
     f = open('picture','w')
     f.write(pic.content)
 
+getVapor()
