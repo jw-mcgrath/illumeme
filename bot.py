@@ -16,7 +16,7 @@ from os import listdir
 from string import Template
 from random import choice as choose
 
-def vaporize(image_dir, audio_file='short-macplus.mp3'):
+def vaporize(image_dir, make_mp4_instead_of_gif, audio_file='short-macplus.mp3'):
   # first get image type
   dir_contents = listdir(image_dir)
   image_type = None
@@ -29,18 +29,30 @@ def vaporize(image_dir, audio_file='short-macplus.mp3'):
         image_type = some_type
         break
 
+  if image_type is None:
+    print 'UNKNOWN IMAGE TYPE!'
+
   slideshow_cmd = Template('ffmpeg -framerate 1/3 -i $idr/image%03d.$itp -c:v libx264 -pix_fmt yuv420p $idr/show.mp4')
-  movie_cmd = Template('ffmpeg -i $idr/show.mp4 -i ./short-macplus.mp3 -vcodec copy $idr/final.mp4')
+  # TODO: pipe `yes` for overwriting?
+  slideshow_cmd = '' + slideshow_cmd.substitute(idr = image_dir, itp = image_type)
 
-  slideshow_cmd = slideshow_cmd.substitute(idr = image_dir, itp = image_type)
-  movie_cmd = movie_cmd.substitute(idr = image_dir)
+  result_cmd = None
+  result_path = None
 
-  print '\n\n\t' + slideshow_cmd + '\n\n\t' + movie_cmd + '\n\n'
+  if make_mp4_instead_of_gif:
+    result_cmd = Template('ffmpeg -i $idr/show.mp4 -i ./short-macplus.mp3 -vcodec copy $idr/final.mp4')
+    result_path = image_dir + '/final.mp4'
+  else:
+    result_cmd = Template('ffmpeg -i $idr/show.mp4 $idr/final.gif')
+    result_path = image_dir + '/final.gif'
+
+  # TODO: pipe `yes` for overwriting?
+  result_cmd = '' + result_cmd.substitute(idr = image_dir)
 
   call(slideshow_cmd.split(' '))
-  call(movie_cmd.split(' '))
+  call(result_cmd.split(' '))
 
-  return (image_dir + '/final.mp4')
+  return result_path
 
 def get_image_urls(tweet):
   if 'media' not in tweet.entities:
@@ -66,9 +78,14 @@ RESPONSES = [
     'Make ∆merica Great Again™ @realDonaldTrump #uncommonhacks'
 ]
 
+def tag_reply(uname, msg):
+  return '@' + uname + ': ' + msg
+
 def process_status(status):
   if status.retweeted or status.favorited:
     return
+
+  USE_MP4 = False
 
   uname = status.user.screen_name
   image_urls = get_image_urls(status)
@@ -77,9 +94,14 @@ def process_status(status):
   print '\t' + status.text
   print '\t' + uname
 
+  if uname == 'L0Z0RD' and 'test video' in status.text:
+    print 'VAPORIZE TEST!'
+    result_file_name = vaporize('pics', USE_MP4)
+    api.update_with_media(result_file_name, tag_reply(uname, 'ＩＴ ＩＳ ＣＯＭＰＬＥＴＥ'), status.id)
+    api.create_favorite(status.id)
   # reply with the phrase is image is empty
-  if image_urls == []:
-    resp = '@' + uname + ': ' + choose(RESPONSES)
+  elif image_urls == []:
+    resp = tag_reply(uname, choose(RESPONSES))
     print '\t' + resp
     api.update_status(resp, status.id)
     api.create_favorite(status.id)
