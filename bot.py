@@ -57,7 +57,13 @@ def get_image_urls(tweet):
 RESPONSES = [
     'Ｍ∆ＫＥ ＴＨＥ ＰＬ∆Ｚ∆ ＧＲＥ∆Ｔ ∆Ｇ∆ＩＮ #uncommonhacks',
     'отдых в Припяти #uncommonhacks',
-    'ＤＡＮＫ#uncommonhacks'
+    'ＤＡＮＫ#uncommonhacks',
+    'ｗｈｅｒｅ＇ｓ ｔｈｅ ｂｉｒｔｈ ｃｅｒｔｉｆｉｃａｔｅ ｔｈｏ#uncommonhacks',
+    'ＡＬＯＨＡ#uncommonhacks',
+    'ＴＲＵＳＴ ＴＨＥ ＢＲ∆ＮＤ#uncommonhacks',
+    'Do you drink @FIJIWater? #uncommonhacks',
+    'Have you eaten your daily ration of celery today? #uncommonhacks',
+    'Make ∆merica Great Again™ @realDonaldTrump #uncommonhacks'
 ]
 
 def process_status(status):
