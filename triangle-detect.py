@@ -20,4 +20,4 @@ def find_triangles(filename):
     cv2.drawContours(copy, [largest], FIRST, RED, THICKNESS)
     cv2.imwrite(filename +"_result", copy)
 
-find_trianlges("picture")
+find_triangles("picture")
