@@ -1,5 +1,7 @@
 *.pdf
 *.vim
+*.pyc
 
 secrets.*
 helloworld.txt
+macplus.mp3
