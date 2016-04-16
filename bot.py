@@ -40,9 +40,22 @@ def vaporize(image_dir, audio_file='short-macplus.mp3'):
 
   return (image_dir + '/final.mp4')
 
+def get_image_urls(tweet):
+  if 'media' not in tweet.entities:
+    return []
+
+  urls = []
+
+  for media in tweet.entities.get('media', [{}]):
+    if media.get('type', None) == 'photo':
+      urls.append(media['media_url'])
+  return urls
+
 def process_status(status):
   print status.text
   print status.user.screen_name
+  # print status.entities
+  print (get_image_urls(status) or 'No images')
   print '\n'
 
 if __name__ == '__main__':
