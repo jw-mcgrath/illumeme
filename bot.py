@@ -78,7 +78,7 @@ RESPONSES = [
     'Do you drink @FIJIWater? #uncommonhacks',
     'Have you eaten your daily ration of celery today? #uncommonhacks',
     'Make ∆merica Great Again™ @realDonaldTrump #uncommonhacks',
-    'My favorite beverage is @Faygo Moon Mist. Sorry @FIJIWater. #uncommonhacks'
+    'My favorite beverage is @Faygo Moon Mist. Sorry @FIJIWater. #uncommonhacks',
     'S E A P U N K™ is so last year.. #uncommonhacks'
 ]
 
@@ -129,7 +129,7 @@ def process_status(status):
     print '\t' + resp
     api.update_status(resp, status.id)
     api.create_favorite(status.id)
-  elif len(image_urls) > 0:
+  elif uname == 'L0Z0RD' and len(image_urls) > 0:
     for url in image_urls:
       prepare_image(url, id)
       # TODO: find_illuminati...
@@ -142,7 +142,7 @@ def handle_mentions(api):
     process_status(status)
 
 if __name__ == '__main__':
-  print 'BOT STARTED! Use Ctrl-Z to "kill"'\n'
+  print 'BOT STARTED! Use Ctrl-Z to "kill"\n'
 
   reload(sys)
   sys.setdefaultencoding('utf8')
