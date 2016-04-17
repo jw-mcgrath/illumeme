@@ -79,6 +79,7 @@ RESPONSES = [
     'Have you eaten your daily ration of celery today? #uncommonhacks',
     'Make ∆merica Great Again™ @realDonaldTrump #uncommonhacks',
     'My favorite beverage is @Faygo Moon Mist. Sorry @FIJIWater. #uncommonhacks'
+    'S E A P U N K™ is so last year.. #uncommonhacks'
 ]
 
 def tag_reply(uname, msg):
