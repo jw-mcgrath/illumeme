@@ -68,20 +68,6 @@ def get_image_urls(tweet):
       urls.append(media['media_url'])
   return urls
 
-RESPONSES = [
-    'Ｍ∆ＫＥ ＴＨＥ ＰＬ∆Ｚ∆ ＧＲＥ∆Ｔ ∆Ｇ∆ＩＮ #uncommonhacks',
-    'отдых в Припяти #uncommonhacks',
-    'ＤＡＮＫ#uncommonhacks',
-    'ｗｈｅｒｅ＇ｓ ｔｈｅ ｂｉｒｔｈ ｃｅｒｔｉｆｉｃａｔｅ ｔｈｏ#uncommonhacks',
-    'ＡＬＯＨＡ#uncommonhacks',
-    'ＴＲＵＳＴ ＴＨＥ ＢＲ∆ＮＤ#uncommonhacks',
-    'Do you drink @FIJIWater? #uncommonhacks',
-    'Have you eaten your daily ration of celery today? #uncommonhacks',
-    'Make ∆merica Great Again™ @realDonaldTrump #uncommonhacks',
-    'My favorite beverage is @Faygo Moon Mist. Sorry @FIJIWater. #uncommonhacks',
-    'S E A P U N K™ is so last year.. #uncommonhacks'
-]
-
 def tag_reply(uname, msg):
   return '@' + uname + ': ' + msg
 
@@ -105,7 +91,7 @@ def prepare_image(url, id):
   return orig_img_path
 
 
-def process_status(status):
+def process_status(status, responses):
   if status.retweeted or status.favorited:
     return
 
@@ -125,7 +111,7 @@ def process_status(status):
     api.create_favorite(status.id)
   # reply with the phrase is image is empty
   elif image_urls == []:
-    resp = tag_reply(uname, choose(RESPONSES))
+    resp = tag_reply(uname, choose(responses))
     print '\t' + resp
     api.update_status(resp, status.id)
     api.create_favorite(status.id)
@@ -137,9 +123,9 @@ def process_status(status):
 
   print '\n'
 
-def handle_mentions(api):
+def handle_mentions(api, responses):
   for status in tweepy.Cursor(api.mentions_timeline).items():
-    process_status(status)
+    process_status(status, responses)
 
 if __name__ == '__main__':
   print 'BOT STARTED! Use Ctrl-Z to "kill"\n'
@@ -147,13 +133,20 @@ if __name__ == '__main__':
   reload(sys)
   sys.setdefaultencoding('utf8')
 
+  responses = None
+
+  with open('responses.txt', 'r') as response_file:
+    responses = response_file.readlines()
+
   auth = tweepy.OAuthHandler(Secrets['CONSUMER_KEY'], Secrets['CONSUMER_SECRET'])
   auth.set_access_token(Secrets['ACCESS_KEY'], Secrets['ACCESS_SECRET'])
   api = tweepy.API(auth)
 
   def interval_func():
-    handle_mentions(api)
+    handle_mentions(api, responses)
 
   INTERVAL_TIME = 60 * 2 # two minutes
+
+  interval_func()
 
   si_ret = set_interval(interval_func, INTERVAL_TIME)
