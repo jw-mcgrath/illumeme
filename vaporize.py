@@ -10,10 +10,13 @@ from random import choice as choose
 # export slideshow to final.mp4 video using short-macplus.mp3 (15 sec long)
 # `ffmpeg -i clip.mp4 -i short-macplus.mp3 -vcodec copy final.mp4`
 
-def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file='short-macplus.mp3'):
+def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file = None):
   # first get image type
   dir_contents = listdir(image_dir)
   image_type = None
+
+  if audio_file is None:
+      audio_file = choose(['x-files.ogg', 'short-macplus.mp3'])
 
   for filename in dir_contents:
     for some_type in img_types:
@@ -34,7 +37,12 @@ def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file='short-ma
   print yd_cmd
   call(yd_cmd.split(' '))
 
-  slideshow_cmd = Template('ffmpeg -loglevel panic -framerate 1/2 -i $idr/image%03d.$itp -c:v libx264 -pix_fmt yuv420p $idr/show.mp4')
+  # optimize jp(e)gs
+  if img_types == 'jpeg' or image_type == 'jpg':
+      for img_file in img_files:
+          call(['jpegoptim', image_dir + '/' + img_file])
+
+  slideshow_cmd = Template('ffmpeg -framerate 1/2 -i $idr/image%03d.$itp -movflags faststart -c:v libx264 -pix_fmt yuv420p $idr/show.mp4')
   # TODO: pipe `yes` for overwriting?
   slideshow_cmd = '' + slideshow_cmd.substitute(idr = image_dir, itp = image_type)
 
@@ -55,5 +63,10 @@ def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file='short-ma
 
   call(slideshow_cmd.split(' '))
   call(result_cmd.split(' '))
+
+  print '\n\n\n'
+  print slideshow_cmd
+  print result_cmd
+  print '\n\n\n'
 
   return result_path

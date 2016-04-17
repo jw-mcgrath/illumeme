@@ -115,12 +115,13 @@ def process_status(status, responses):
       (dir_path, orig_img_path) = prepare_image(url, status.id)
       build(dir_path, orig_img_path)
       final_result = vaporize(dir_path, True, IMG_TYPES)
-      resp = tag_reply(uname, 'ｉｔ＇ｓ ａｌｌ ｉｎ ｙｏｕ ｈｅａｄ...')
+      # resp = tag_reply(uname, 'ｉｔ＇ｓ ａｌｌ ｉｎ ｙｏｕ ｈｅａｄ...')
+      resp = tag_reply(uname, 'illiminatey confrmed!!!!')
       new_file_name = str(status.id) + final_result
       cp_cmd = 'cp ./%s/%s /var/www/memes/%s' % (dir_path, final_result, new_file_name)
       print '\t' + cp_cmd
       call(cp_cmd.split(' '))
-      resp += ' http://162.243.200.18/%s' % new_file_name
+      resp += ' http://162.243.200.18/memes/%s' % new_file_name
       api.update_status(resp, status.id)
       api.create_favorite(status.id)
 
@@ -143,7 +144,7 @@ if __name__ == '__main__':
 
   auth = tweepy.OAuthHandler(Secrets['CONSUMER_KEY'], Secrets['CONSUMER_SECRET'])
   auth.set_access_token(Secrets['ACCESS_KEY'], Secrets['ACCESS_SECRET'])
-  api = tweepy.API(auth)
+  api = tweepy.API(auth, wait_on_rate_limit = True, wait_on_rate_limit_notify = True)
 
   def interval_func():
     handle_mentions(api, responses)
