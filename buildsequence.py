@@ -9,8 +9,8 @@ def build(dirPath,filename = None):
         filename = spook.getFilename()
         spooky_x, spooky_y = spook.generate()
     else:
-         spook = Illumify(filename)
-         spooky_x, spooky_y = spook.generate()
+        spook = Illumify(filename)
+        spooky_x, spooky_y = spook.generate() 
     dst = copy = img = cv2.imread(filename, cv2.IMREAD_COLOR) 
     orig_h, orig_w = img.shape[:2]
     #cv2.imwrite("image005."+filename.split(".")[1],dst)
@@ -27,7 +27,6 @@ def build(dirPath,filename = None):
  
 count = 30
 def getVapor():
-    print random
     payload = {"count":count}
     headers = {"user-agent":"Bot by /u/joshmcgrath"}
     res = requests.get('http://www.reddit.com/r/vaporwaveart/hot/.json',params=payload, headers = headers)
