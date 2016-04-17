@@ -19,6 +19,7 @@ def build(filename = None):
         crop_image = img[spooky_x-100:spooky_x+h, spooky_y-100:spooky_y+h]
         dst = cv2.resize(crop_image,(orig_w,orig_h))
         cv2.imwrite("image00" + str(i) +"."+filename.split(".")[1],dst)
+
  
 count = 30
 def getVapor():
