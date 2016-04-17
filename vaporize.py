@@ -31,7 +31,8 @@ def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file = None):
   # add the `you decide` feature
   # link a random yd[1-5] to image099.type to the proper directory
   YOU_DECIDES = ['yd1', 'yd2', 'yd3', 'yd4', 'yd5']
-  yd_cmd = Template('ln ./you-decide/$ydn.$itp $idr/image00$l.$itp')
+  # screw memory
+  yd_cmd = Template('cp ./you-decide/$ydn.$itp $idr/image00$l.$itp')
   img_files = filter(lambda file: file.endswith(image_type), dir_contents)
   yd_cmd = yd_cmd.substitute(ydn = choose(YOU_DECIDES), itp = image_type, idr = image_dir, l = str(len(img_files) + 1))
   print yd_cmd
