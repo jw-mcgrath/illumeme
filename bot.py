@@ -12,7 +12,7 @@
 import tweepy, time, sys
 from secrets import Secrets
 from subprocess import call
-from os import listdir
+from os import listdir, mkdir
 from string import Template
 from random import choice as choose
 from set_interval import set_interval
@@ -21,7 +21,7 @@ from urllib import urlretrieve
 IMG_TYPES = ['jpg', 'jpeg', 'png', 'tiff']
 
 # TODO: separate into own file
-def vaporize(image_dir, make_mp4_instead_of_gif, audio_file='short-macplus.mp3'):
+def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file='short-macplus.mp3'):
   # first get image type
   dir_contents = listdir(image_dir)
   image_type = None
@@ -71,10 +71,10 @@ def get_image_urls(tweet):
 def tag_reply(uname, msg):
   return '@' + uname + ': ' + msg
 
-def prepare_image(url, id):
+def prepare_image(url, tid):
   # first create the directory
-  dir_path = './img-' + str(id)
-  os.mkdir(dir_path)
+  dir_path = './img-' + str(tid)
+  mkdir(dir_path)
   # then download the image into it
   img_type = None
 
@@ -106,7 +106,7 @@ def process_status(status, responses):
 
   if uname == 'L0Z0RD' and 'test video' in status.text:
     print 'VAPORIZE TEST!'
-    result_file_name = vaporize('pics', USE_MP4)
+    result_file_name = vaporize('pics', USE_MP4, IMG_TYPES)
     api.update_with_media(result_file_name, tag_reply(uname, 'ＩＴ ＩＳ ＣＯＭＰＬＥＴＥ'), status.id)
     api.create_favorite(status.id)
   # reply with the phrase is image is empty
@@ -117,9 +117,12 @@ def process_status(status, responses):
     api.create_favorite(status.id)
   elif uname == 'L0Z0RD' and len(image_urls) > 0:
     for url in image_urls:
-      prepare_image(url, id)
+      prepare_image(url, status.id)
       # TODO: find_illuminati...
       # TODO: send response...
+      # XXX: THIS IS TEMPORARY
+      api.update_status('@LOZORD: it likely worked my dude', status.id)
+      api.create_favorite(status.id)
 
   print '\n'
 
