@@ -9,9 +9,9 @@ from random import choice as choose
 from set_interval import set_interval
 from urllib import urlretrieve
 from vaporize import vaporize
-
+from jaidenquote import JaidenQuote
 IMG_TYPES = ['jpg', 'jpeg', 'png', 'tiff']
-
+jaiden = JaidenQuote()
 def get_image_urls(tweet):
   if 'media' not in tweet.entities:
     return []
@@ -66,7 +66,8 @@ def process_status(status, responses):
     api.create_favorite(status.id)
   # reply with the phrase is image is empty
   elif image_urls == []:
-    resp = tag_reply(uname, choose(responses))
+    #resp = tag_reply(uname, choose(responses))
+    resp = jaiden.get()
     print '\t' + resp
     api.update_status(resp, status.id)
     api.create_favorite(status.id)
