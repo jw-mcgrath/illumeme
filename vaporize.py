@@ -38,9 +38,11 @@ def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file = None):
   call(yd_cmd.split(' '))
 
   # optimize jp(e)gs
+
   if img_types == 'jpeg' or image_type == 'jpg':
       for img_file in img_files:
           call(['jpegoptim', image_dir + '/' + img_file])
+
 
   slideshow_cmd = Template('ffmpeg -framerate 1/2 -i $idr/image%03d.$itp -movflags faststart -c:v libx264 -pix_fmt yuv420p $idr/show.mp4')
   # TODO: pipe `yes` for overwriting?

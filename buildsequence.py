@@ -10,6 +10,7 @@ def build(dirPath,filename = None):
         spooky_x, spooky_y = spook.generate()
     else:
         spook = Illumify(filename)
+        filename = spook.getFilename()
         spooky_x, spooky_y = spook.generate()
     dst = copy = img = cv2.imread(filename, cv2.IMREAD_COLOR)
     orig_h, orig_w = img.shape[:2]
@@ -42,10 +43,10 @@ def getVapor():
 
 class Illumify:
     def __init__(self, filename):
-        self.illumitati_img = Image.open('illuminati.png','r')
+        strings = ['illuminati.png', 'jazz.png']
+        self.illumitati_img = Image.open(random.choice(strings),'r')
         self.pic = Image.open(filename,'r')
         self.filename = filename
-        print self.filename
     def generate(self):
         height, width = self.pic.size
         ill_height, ill_width = self.illumitati_img.size
