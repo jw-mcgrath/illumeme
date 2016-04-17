@@ -22,7 +22,7 @@ def build(dirPath,filename = None):
         w = w_o - step_w*i
         crop_image = img[spooky_x:spooky_x+h, spooky_y:spooky_y+h]
         dst = cv2.resize(crop_image,(orig_w,orig_h))
-        cv2.imwrite(dirPath+"/image00" + str(i) +"."+filename.split(".")[1],dst)
+        cv2.imwrite(dirPath+"/image00" + str(i) +"."+get_filetype(filename),dst)
 
  
 count = 30
@@ -34,6 +34,7 @@ def getVapor():
     res_len = len(resobj["data"]["children"])
     pic_url =  resobj["data"]["children"][random.randrange(res_len - 1)]["data"]["preview"]["images"][0]["source"]["url"]
     pic = requests.get(pic_url)
+    print pic.headers['Content-Type']
     img_type = pic.headers['Content-Type'].split('/')[1]
     f = open('picture.'+img_type,'w')
     f.write(pic.content)
@@ -44,13 +45,19 @@ class Illumify:
         self.illumitati_img = Image.open('illuminati.png','r')
         self.pic = Image.open(filename,'r')
         self.filename = filename
+        print self.filename
     def generate(self):
         height, width = self.pic.size
         ill_height, ill_width = self.illumitati_img.size
         self.illumitati_img = self.illumitati_img.resize((ill_height/12,ill_width/12))
         pos = (random.randrange(height/5)+ill_height/18, random.randrange(width/5)+ill_width/18)
         self.pic.paste(self.illumitati_img,pos, self.illumitati_img) 
-        self.pic.save(self.filename.split('.')[0] + "illum."+ self.filename.split('.')[1])
+        self.pic.save(self.filename.split('.')[0] + "illum."+ get_filetype(self.filename))
         return pos
     def getFilename(self):
         return self.filename.split('.')[0] + "illum."+ self.filename.split('.')[1]
+
+
+
+def get_filetype(string):
+    return string.split('.')[-1]

@@ -4,7 +4,7 @@
 
 import tweepy, time, sys
 from secrets import Secrets
-from os import *
+from os import mkdir, path
 from random import choice as choose
 from set_interval import set_interval
 from urllib import urlretrieve
@@ -35,7 +35,7 @@ def tag_reply(uname, msg):
 def prepare_image(url, tid):
   # first create the directory
   dir_path = './img-' + str(tid)
-  if not os.path.isdir(dir_path)
+  if not path.isdir(dir_path):
       mkdir(dir_path)
   # then download the image into it
   img_type = None
@@ -120,7 +120,7 @@ def process_status(status, responses):
       ln_cmd = 'ln ./%s/%s /var/www/%s' % (dir_path, final_result, new_file_name)
       print '\t' + ln_cmd
       call(ln_cmd.split(' '))
-      resp += ' http://162.243.200.18/%s' % final_result
+      resp += ' http://162.243.200.18/%s' % new_file_name
       api.update_status(resp, status.id)
       api.create_favorite(status.id)
 
