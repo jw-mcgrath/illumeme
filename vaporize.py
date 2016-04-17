@@ -32,14 +32,14 @@ def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file='short-ma
   result_path = None
 
   if make_mp4_instead_of_gif:
-    result_cmd = Template('ffmpeg -loglevel panic -i $idr/show.mp4 -i ./short-macplus.mp3 -vcodec copy $idr/final.mp4')
+    result_cmd = Template('ffmpeg -loglevel panic -i $idr/show.mp4 -i ./$adf -vcodec copy $idr/final.mp4')
     result_path = image_dir + '/final.mp4'
   else:
     result_cmd = Template('ffmpeg -loglevel panic -i $idr/show.mp4 $idr/final.gif')
     result_path = image_dir + '/final.gif'
 
   # TODO: pipe `yes` for overwriting?
-  result_cmd = '' + result_cmd.substitute(idr = image_dir)
+  result_cmd = '' + result_cmd.substitute(idr = image_dir, adf = audio_file)
 
   call(slideshow_cmd.split(' '))
   call(result_cmd.split(' '))
