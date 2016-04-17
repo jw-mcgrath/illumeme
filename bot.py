@@ -144,7 +144,7 @@ if __name__ == '__main__':
 
   auth = tweepy.OAuthHandler(Secrets['CONSUMER_KEY'], Secrets['CONSUMER_SECRET'])
   auth.set_access_token(Secrets['ACCESS_KEY'], Secrets['ACCESS_SECRET'])
-  api = tweepy.API(auth, wait_on_rate_limit = True, wait_on_rate_limit_notify = True)
+  api = tweepy.API(auth, wait_on_rate_limit = False, wait_on_rate_limit_notify = False)
 
   def interval_func():
     handle_mentions(api, responses)

@@ -10,8 +10,8 @@ def build(dirPath,filename = None):
         spooky_x, spooky_y = spook.generate()
     else:
         spook = Illumify(filename)
-        spooky_x, spooky_y = spook.generate() 
-    dst = copy = img = cv2.imread(filename, cv2.IMREAD_COLOR) 
+        spooky_x, spooky_y = spook.generate()
+    dst = copy = img = cv2.imread(filename, cv2.IMREAD_COLOR)
     orig_h, orig_w = img.shape[:2]
     #cv2.imwrite("image005."+filename.split(".")[1],dst)
     h_o,w_o = copy.shape[:2]
@@ -24,7 +24,7 @@ def build(dirPath,filename = None):
         dst = cv2.resize(crop_image,(orig_w,orig_h))
         cv2.imwrite(dirPath+"/image00" + str(i) +"."+get_filetype(filename),dst)
 
- 
+
 count = 30
 def getVapor():
     payload = {"count":count}
@@ -51,11 +51,11 @@ class Illumify:
         ill_height, ill_width = self.illumitati_img.size
         self.illumitati_img = self.illumitati_img.resize((ill_height/12,ill_width/12))
         pos = (random.randrange(height/5)+ill_height/18, random.randrange(width/5)+ill_width/18)
-        self.pic.paste(self.illumitati_img,pos, self.illumitati_img) 
+        self.pic.paste(self.illumitati_img,pos, self.illumitati_img)
         self.pic.save(self.filename.split('.')[0] + "illum."+ get_filetype(self.filename))
         return pos
     def getFilename(self):
-        return self.filename.split('.')[0] + "illum."+ self.filename.split('.')[1]
+        return self.filename.split('.')[0] + "illum."+ get_filetype(self.filename)
 
 
 
