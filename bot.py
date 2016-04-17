@@ -10,6 +10,7 @@ from set_interval import set_interval
 from urllib import urlretrieve
 from vaporize import vaporize
 from buildsequence import build
+from subprocess import call
 
 IMG_TYPES = ['jpg', 'jpeg', 'png', 'tiff']
 KEYWORDS = ['vapor', 'vape', 'dank', 'meme', 'uncommon', 'trump']
@@ -46,13 +47,13 @@ def prepare_image(url, tid):
   orig_img_path = dir_path + '/orig.' + img_type
   urlretrieve(url, orig_img_path)
 
-  return orig_img_path
+  return (dir_path, orig_img_path)
 
 def process_status(status, responses):
   if status.retweeted or status.favorited:
     return
 
-  USE_MP4 = False
+  # USE_MP4 = False
 
   uname = status.user.screen_name
   image_urls = get_image_urls(status)
@@ -87,7 +88,8 @@ def process_status(status, responses):
       # make gif
       result_path = vaporize(dir_path, False, IMG_TYPES)
       resp = tag_reply(uname, '4 u, fam #uncommonhacks')
-      api.update_with_media(result_path, resp, status.id)
+      # TODO: deprecated
+      api.update_with_media(dir_path + '/' + result_path, resp, status.id)
     else:
       resp = tag_reply(uname, choose(responses))
       print '\t' + resp
@@ -97,11 +99,16 @@ def process_status(status, responses):
 
   else:
     for url in image_urls:
-      prepare_image(url, status.id)
-      # TODO: find_illuminati...
-      # TODO: send response...
-      # XXX: THIS IS TEMPORARY
-      api.update_status('@LOZORD: it likely worked my dude', status.id)
+      (dir_path, orig_img_path) = prepare_image(url, status.id)
+      build(dir_path, orig_img_path)
+      final_result = vaporize(dir_path, True, IMG_TYPES)
+      resp = tag_reply(uname, 'ｉｔ＇ｓ ａｌｌ ｉｎ ｙｏｕ ｈｅａｄ...')
+      new_file_name = str(status.id) + final_result
+      ln_cmd = 'ln ./%s/%s /var/www/%s' % (dir_path, final_result, new_file_name)
+      print '\t' + ln_cmd
+      call(ln_cmd.split(' '))
+      resp += ' http://162.243.200.18/%s' % final_result
+      api.update_status(resp, status.id)
       api.create_favorite(status.id)
 
   print '\n'
