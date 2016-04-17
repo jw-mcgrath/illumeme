@@ -10,7 +10,8 @@ def getVapor():
     res_len = len(resobj["data"]["children"])
     pic_url =  resobj["data"]["children"][random.randrange(res_len - 1)]["data"]["preview"]["images"][0]["source"]["url"]
     pic = requests.get(pic_url)
-    f = open('picture','w')
+    img_type = pic.headers['Content-Type'].split('/')[1]
+    f = open('picture.'+img_type,'w')
     f.write(pic.content)
 
 getVapor()
