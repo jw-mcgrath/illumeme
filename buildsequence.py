@@ -26,7 +26,6 @@ def build(dirPath,filename = None):
  
 count = 30
 def getVapor():
-    print random
     payload = {"count":count}
     headers = {"user-agent":"Bot by /u/joshmcgrath"}
     res = requests.get('http://www.reddit.com/r/vaporwaveart/hot/.json',params=payload, headers = headers)

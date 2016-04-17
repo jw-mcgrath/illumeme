@@ -12,7 +12,7 @@ from vaporize import vaporize
 from buildsequence import build
 
 IMG_TYPES = ['jpg', 'jpeg', 'png', 'tiff']
-KEYWORDS = ['vapor', 'vape', 'dank', 'meme', 'uncommon']
+KEYWORDS = ['vapor', 'vape', 'dank', 'meme', 'uncommon', 'trump']
 
 def get_image_urls(tweet):
   if 'media' not in tweet.entities:
@@ -72,7 +72,14 @@ def process_status(status, responses):
   # reply with the phrase is image is empty and no kws
   if image_urls == []:
 
-    if status.text in KEYWORDS:
+    contains_kws = False
+
+    for kw in KEYWORDS:
+      if kw in status.text:
+        contains_kws = True
+        break
+
+    if contains_kws:
       # pull a photo from reddit
       dir_path = './img-%s' % status.id
       mkdir(dir_path)
