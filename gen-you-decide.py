@@ -1,7 +1,7 @@
 import os
 from subprocess import call
 
-orig_files = os.listdir('./you-decide')
+orig_files = filter(lambda file: file.endswith('png'), os.listdir('./you-decide'))
 
 print 'Original files: ' + str(orig_files)
 

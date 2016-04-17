@@ -1,6 +1,7 @@
 from os import listdir
 from string import Template
 from subprocess import call
+from random import choice as choose
 
 # vaporize example:
 # expects 5 pictures
@@ -24,7 +25,16 @@ def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file='short-ma
     print 'UNKNOWN IMAGE TYPE!'
     return None
 
-  slideshow_cmd = Template('ffmpeg -loglevel panic -framerate 1/3 -i $idr/image%03d.$itp -c:v libx264 -pix_fmt yuv420p $idr/show.mp4')
+  # add the `you decide` feature
+  # link a random yd[1-5] to image099.type to the proper directory
+  YOU_DECIDES = ['yd1', 'yd2', 'yd3', 'yd4', 'yd5']
+  yd_cmd = Template('ln ./you-decide/$ydn.$itp $idr/image00$l.$itp')
+  img_files = filter(lambda file: file.endswith(image_type), dir_contents)
+  yd_cmd = yd_cmd.substitute(ydn = choose(YOU_DECIDES), itp = image_type, idr = image_dir, l = str(len(img_files) + 1))
+  print yd_cmd
+  call(yd_cmd.split(' '))
+
+  slideshow_cmd = Template('ffmpeg -loglevel panic -framerate 1/2 -i $idr/image%03d.$itp -c:v libx264 -pix_fmt yuv420p $idr/show.mp4')
   # TODO: pipe `yes` for overwriting?
   slideshow_cmd = '' + slideshow_cmd.substitute(idr = image_dir, itp = image_type)
 
