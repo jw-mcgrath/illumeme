@@ -42,11 +42,11 @@ def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file='short-ma
   result_path = None
 
   if make_mp4_instead_of_gif:
-    result_cmd = Template('ffmpeg -loglevel panic -i $idr/show.mp4 -i ./$adf -strict -2 -vcodec copy $idr/final.mp4')
+    result_cmd = Template('ffmpeg -i $idr/show.mp4 -i ./$adf -strict -2 -vcodec copy $idr/final.mp4')
     # result_path = image_dir + '/' + image_dir + '-' + 'final.mp4'
     result_path = 'final.mp4'
   else:
-    result_cmd = Template('ffmpeg -loglevel panic -i $idr/show.mp4 $idr/final.gif')
+    result_cmd = Template('ffmpeg -i $idr/show.mp4 $idr/final.gif')
     # result_path = image_dir + '/' + image_dir + '-' + 'final.gif'
     result_path = 'final.gif'
 

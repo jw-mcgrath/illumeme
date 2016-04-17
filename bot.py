@@ -117,9 +117,9 @@ def process_status(status, responses):
       final_result = vaporize(dir_path, True, IMG_TYPES)
       resp = tag_reply(uname, 'ｉｔ＇ｓ ａｌｌ ｉｎ ｙｏｕ ｈｅａｄ...')
       new_file_name = str(status.id) + final_result
-      ln_cmd = 'ln ./%s/%s /var/www/%s' % (dir_path, final_result, new_file_name)
-      print '\t' + ln_cmd
-      call(ln_cmd.split(' '))
+      cp_cmd = 'cp ./%s/%s /var/www/memes/%s' % (dir_path, final_result, new_file_name)
+      print '\t' + cp_cmd
+      call(cp_cmd.split(' '))
       resp += ' http://162.243.200.18/%s' % new_file_name
       api.update_status(resp, status.id)
       api.create_favorite(status.id)
