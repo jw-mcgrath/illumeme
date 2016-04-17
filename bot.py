@@ -4,7 +4,7 @@
 
 import tweepy, time, sys
 from secrets import Secrets
-from os import mkdir
+from os import *
 from random import choice as choose
 from set_interval import set_interval
 from urllib import urlretrieve
@@ -35,7 +35,8 @@ def tag_reply(uname, msg):
 def prepare_image(url, tid):
   # first create the directory
   dir_path = './img-' + str(tid)
-  mkdir(dir_path)
+  if not os.path.isdir(dir_path)
+      mkdir(dir_path)
   # then download the image into it
   img_type = None
 
