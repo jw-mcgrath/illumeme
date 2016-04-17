@@ -17,7 +17,7 @@ def build(filename = None):
         h,w = copy.shape[:2]
         h = h/2*i
         w = w/2*i
-        crop_image = img[ (spooky_x, spooky_y),(spooky_x+ w, spooky_y + h)]
+        crop_image = img[spooky_x:spooky_x+w, spooky_y:spooky_y + h]
         dst = dv2.resize(crop_image,(orig_w,orig_h))
         cv2.imwrite("image00" + i +"."+filename.split(".")[1],dst)
  
