@@ -10,3 +10,6 @@ macplus.mp3
 *.gif
 
 img-*/
+
+you-decide/*
+!you-decide/yd*.png
