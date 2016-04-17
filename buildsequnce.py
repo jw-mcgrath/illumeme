@@ -12,11 +12,14 @@ def build(filename = None):
         spooky_x, spooky_y = Illumify(filename)
     dst = copy = img = cv2.imread(filename, cv2.IMREAD_COLOR) 
     orig_h, orig_w = img.shape[:2]
+    cv2.imwrite("image005."+filename.split(".")[1],dst)
+    h_o,w_o = copy.shape[:2]
+    step_h = h_o/5
+    step_w = w_o/5
     for i in range(1,5):
-        h,w = copy.shape[:2]
-        h = h/4*i - 350
-        w = w/4*i - 350
-        crop_image = img[spooky_x-100:spooky_x+h, spooky_y-100:spooky_y+h]
+        h = h_o - step_h*i
+        w = w_o - step_w*i
+        crop_image = img[spooky_x:spooky_x+h, spooky_y:spooky_y+h]
         dst = cv2.resize(crop_image,(orig_w,orig_h))
         cv2.imwrite("image00" + str(i) +"."+filename.split(".")[1],dst)
 
