@@ -7,7 +7,6 @@ def build(filename = None):
     if filename is None:
         spook = Illumify(getVapor())
         filename = spook.getFilename()
-        print filename
         spooky_x, spooky_y = spook.generate()
     else:
         spooky_x, spooky_y = Illumify(filename)
@@ -15,11 +14,12 @@ def build(filename = None):
     orig_h, orig_w = img.shape[:2]
     for i in range(1,5):
         h,w = copy.shape[:2]
-        h = h/2*i
-        w = w/2*i
-        crop_image = img[ (spooky_x, spooky_y),(spooky_x+ w, spooky_y + h)]
-        dst = dv2.resize(crop_image,(orig_w,orig_h))
-        cv2.imwrite("image00" + i +"."+filename.split(".")[1],dst)
+        h = h/4*i - 350
+        w = w/4*i - 350
+        crop_image = img[spooky_x-100:spooky_x+h, spooky_y-100:spooky_y+h]
+        dst = cv2.resize(crop_image,(orig_w,orig_h))
+        cv2.imwrite("image00" + str(i) +"."+filename.split(".")[1],dst)
+
  
 count = 30
 def getVapor():
@@ -50,5 +50,5 @@ class Illumify:
         self.pic.save(self.filename.split('.')[0] + "illum."+ self.filename.split('.')[1])
         return pos
     def getFilename(self):
-        return self.filename
+        return self.filename.split('.')[0] + "illum."+ self.filename.split('.')[1]
 build()
