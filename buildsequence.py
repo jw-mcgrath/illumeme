@@ -43,8 +43,8 @@ def getVapor():
 
 class Illumify:
     def __init__(self, filename):
-        strings = ['illuminati.png', 'jazz.png']
-        self.illumitati_img = Image.open(random.choice(strings),'r')
+        #strings = ['illuminati.png', 'jazz.png']
+        self.illumitati_img = Image.open('illuminati.png','r')
         self.pic = Image.open(filename,'r')
         self.filename = filename
     def generate(self):

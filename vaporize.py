@@ -33,7 +33,7 @@ def vaporize(image_dir, make_mp4_instead_of_gif, img_types, audio_file = None):
   YOU_DECIDES = ['yd1', 'yd2', 'yd3', 'yd4', 'yd5']
   # screw memory
   yd_cmd = Template('cp ./you-decide/$ydn.$itp $idr/image00$l.$itp')
-  img_files = filter(lambda file: file.endswith(image_type), dir_contents)
+  img_files = filter(lambda file: file.endswith(image_type) and file.startswith('image0'), dir_contents)
   yd_cmd = yd_cmd.substitute(ydn = choose(YOU_DECIDES), itp = image_type, idr = image_dir, l = str(len(img_files) + 1))
   print yd_cmd
   call(yd_cmd.split(' '))
