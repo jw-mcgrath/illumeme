@@ -3,7 +3,7 @@ import requests
 import json
 import random
 import cv2
-def build(filename = None):
+def build(dirPath,filename = None):
     if filename is None:
         spook = Illumify(getVapor())
         filename = spook.getFilename()
@@ -12,7 +12,7 @@ def build(filename = None):
         spooky_x, spooky_y = Illumify(filename)
     dst = copy = img = cv2.imread(filename, cv2.IMREAD_COLOR) 
     orig_h, orig_w = img.shape[:2]
-    cv2.imwrite("image005."+filename.split(".")[1],dst)
+    #cv2.imwrite("image005."+filename.split(".")[1],dst)
     h_o,w_o = copy.shape[:2]
     step_h = h_o/5
     step_w = w_o/5
@@ -21,7 +21,7 @@ def build(filename = None):
         w = w_o - step_w*i
         crop_image = img[spooky_x:spooky_x+h, spooky_y:spooky_y+h]
         dst = cv2.resize(crop_image,(orig_w,orig_h))
-        cv2.imwrite("image00" + str(i) +"."+filename.split(".")[1],dst)
+        cv2.imwrite(dirPath+"/image00" + str(i) +"."+filename.split(".")[1],dst)
 
  
 count = 30
@@ -54,4 +54,3 @@ class Illumify:
         return pos
     def getFilename(self):
         return self.filename.split('.')[0] + "illum."+ self.filename.split('.')[1]
-build()
