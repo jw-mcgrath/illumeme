@@ -17,7 +17,6 @@ from buildsequence import build
 IMG_TYPES = ['jpg', 'jpeg', 'png', 'tiff']
 KEYWORDS = ['vapor', 'vape', 'dank', 'meme', 'uncommon', 'trump']
 
->>>>>>> 1e2d7eb9f880df9db54f697ad7dd153202a1abdf
 def get_image_urls(tweet):
   if 'media' not in tweet.entities:
     return []
@@ -101,11 +100,11 @@ def process_status(status, responses):
       resp = tag_reply(uname, '4 u, fam #uncommonhacks')
       api.update_with_media(result_path, resp, status.id)
     else:
-      resp = tag_reply(uname, choose(responses))
+      #resp = tag_reply(uname, choose(responses))
+      resp = tag_reply(uname, jaiden.get())
       print '\t' + resp
       api.update_status(resp, status.id)
 
->>>>>>> 1e2d7eb9f880df9db54f697ad7dd153202a1abdf
     api.create_favorite(status.id)
 
   else:
